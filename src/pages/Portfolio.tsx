@@ -1,17 +1,42 @@
-
-import { motion } from "framer-motion";
-import { ArrowUpRight, Globe, Smartphone, Building2, Code2, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ArrowLeft, ArrowUpRight, Building2, Code2, Globe, Smartphone } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
-const allProjects = [
+type Category = "Website" | "Aplicação Mobile" | "ERP / CRM" | "Software";
+
+type Project = {
+  title: string;
+  category: Category;
+  icon: typeof Globe;
+  description: string;
+  tags: string[];
+  gradient: string;
+  url?: string;
+  coverSrc?: string;
+};
+
+const projects: Project[] = [
+  {
+    title: "Município de Alcanena",
+    category: "Website",
+    icon: Globe,
+    description:
+      "Portal institucional com foco em clareza de informação, navegação e experiência em dispositivos móveis.",
+    tags: ["UI/UX", "SEO", "Performance"],
+    gradient: "from-primary to-blue-glow",
+    url: "https://cm-alcanena.pt",
+    coverSrc: "/clientes/sites/alcanena.png",
+  },
   {
     title: "Portal E-Commerce Premium",
     category: "Website",
     icon: Globe,
-    description: "Plataforma de e-commerce com gestão de inventário, pagamentos integrados e dashboard analítico completo.",
+    description:
+      "Plataforma de e-commerce com gestão de inventário, pagamentos integrados e dashboard analítico completo.",
     tags: ["React", "Node.js", "Stripe"],
     gradient: "from-primary to-blue-glow",
   },
@@ -35,7 +60,8 @@ const allProjects = [
     title: "Plataforma de Reservas Online",
     category: "Website",
     icon: Globe,
-    description: "Sistema de reservas com calendário interativo, pagamentos e notificações automáticas.",
+    description:
+      "Sistema de reservas com calendário interativo, pagamentos e notificações automáticas.",
     tags: ["React", "Supabase", "Tailwind"],
     gradient: "from-primary to-blue-glow",
   },
@@ -43,7 +69,8 @@ const allProjects = [
     title: "App de Saúde e Bem-Estar",
     category: "Aplicação Mobile",
     icon: Smartphone,
-    description: "Aplicação de acompanhamento de saúde com integração a wearables e planos personalizados.",
+    description:
+      "Aplicação de acompanhamento de saúde com integração a wearables e planos personalizados.",
     tags: ["Flutter", "Dart", "Health API"],
     gradient: "from-accent to-gold-light",
   },
@@ -51,7 +78,8 @@ const allProjects = [
     title: "CRM para Imobiliárias",
     category: "ERP / CRM",
     icon: Building2,
-    description: "Gestão completa de imóveis, clientes, visitas e contratos com portal para clientes.",
+    description:
+      "Gestão completa de imóveis, clientes, visitas e contratos com portal para clientes.",
     tags: ["Vue.js", "Laravel", "MySQL"],
     gradient: "from-primary to-accent",
   },
@@ -59,7 +87,8 @@ const allProjects = [
     title: "Dashboard Analytics SaaS",
     category: "Software",
     icon: Code2,
-    description: "Plataforma SaaS de analytics com visualização de dados em tempo real e relatórios exportáveis.",
+    description:
+      "Plataforma SaaS de analytics com visualização de dados em tempo real e relatórios exportáveis.",
     tags: ["React", "D3.js", "AWS"],
     gradient: "from-primary to-blue-glow",
   },
@@ -67,7 +96,8 @@ const allProjects = [
     title: "Sistema de Faturação",
     category: "Software",
     icon: Code2,
-    description: "Software de faturação certificado com integração SAF-T, multi-empresa e multi-moeda.",
+    description:
+      "Software de faturação certificado com integração SAF-T, multi-empresa e multi-moeda.",
     tags: ["TypeScript", "PostgreSQL", "PDF"],
     gradient: "from-accent to-gold-light",
   },
@@ -75,15 +105,26 @@ const allProjects = [
     title: "Marketplace B2B",
     category: "Website",
     icon: Globe,
-    description: "Plataforma de marketplace para empresas com sistema de licitações e gestão de fornecedores.",
+    description:
+      "Plataforma de marketplace para empresas com sistema de licitações e gestão de fornecedores.",
     tags: ["Next.js", "Prisma", "Stripe"],
     gradient: "from-primary to-accent",
   },
 ];
 
-const categories = ["Todos", "Website", "Aplicação Mobile", "ERP / CRM", "Software"];
+const categories: Array<"Todos" | Category> = ["Todos", "Website", "Aplicação Mobile", "ERP / CRM", "Software"];
 
 const Portfolio = () => {
+  const [activeCategory, setActiveCategory] = useState<(typeof categories)[number]>("Todos");
+
+  const visibleProjects = useMemo(() => {
+    if (activeCategory === "Todos") {
+      return projects;
+    }
+
+    return projects.filter((p) => p.category === activeCategory);
+  }, [activeCategory]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -127,33 +168,51 @@ const Portfolio = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-wrap gap-2 mb-12"
           >
-            {categories.map((cat, i) => (
-              <button
-                key={cat}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  i === 0
-                    ? "bg-primary text-primary-foreground"
-                    : "glass text-muted-foreground hover:text-foreground hover:border-primary/50"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const isActive = cat === activeCategory;
+
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "glass text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </motion.div>
 
           {/* Projects Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {allProjects.map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <motion.div
-                key={project.title}
+                key={`${project.category}-${project.title}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="group relative glass rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500"
               >
-                <div
-                  className={`h-44 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
-                />
+                <div className="relative h-44">
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
+                  />
+                  {project.coverSrc ? (
+                    <img
+                      src={project.coverSrc}
+                      alt={project.title}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  ) : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+                </div>
+
                 <div className="absolute top-5 left-5">
                   <div className="w-11 h-11 rounded-xl bg-card/80 backdrop-blur-sm border border-border/50 flex items-center justify-center">
                     <project.icon className="w-5 h-5 text-primary" />
@@ -166,13 +225,27 @@ const Portfolio = () => {
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
-                    {project.title}
-                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors flex items-center gap-2">
+                      {project.title}
+                      {project.url ? (
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      ) : null}
+                    </h3>
+
+                    {project.url ? (
+                      <Button asChild variant="heroOutline" size="sm" className="rounded-full">
+                        <a href={project.url} target="_blank" rel="noopener noreferrer">
+                          Visitar
+                        </a>
+                      </Button>
+                    ) : null}
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-3 mb-4 leading-relaxed">
                     {project.description}
                   </p>
+
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span
