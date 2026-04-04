@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { ArrowUpRight, Globe, Smartphone, Building2, Code2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -150,7 +151,9 @@ const Portfolio = () => {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="group relative glass rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500"
               >
-                <div className={`h-44 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`} />
+                <div
+                  className={`h-44 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
+                />
                 <div className="absolute top-5 left-5">
                   <div className="w-11 h-11 rounded-xl bg-card/80 backdrop-blur-sm border border-border/50 flex items-center justify-center">
                     <project.icon className="w-5 h-5 text-primary" />

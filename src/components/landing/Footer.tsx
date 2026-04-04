@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import nextgoLogo from "@/assets/nextgo-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -29,7 +28,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <img
-              src={nextgoLogo}
+              src="/logo.png"
               alt="NextGo"
               className="h-10 w-auto mb-4"
             />

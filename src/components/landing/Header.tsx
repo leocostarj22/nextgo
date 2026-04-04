@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import nextgoLogo from "@/assets/nextgo-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +24,7 @@ const Header = () => {
           {/* Logo */}
           <a href="#" className="flex items-center">
             <img
-              src={nextgoLogo}
+              src="/logo.png"
               alt="NextGo"
               className="h-10 sm:h-12 w-auto"
             />
