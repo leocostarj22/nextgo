@@ -1,6 +1,5 @@
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
-import Clients from "@/components/landing/Clients";
 import Services from "@/components/landing/Services";
 import RecentWork from "@/components/landing/RecentWork";
 import WhyUs from "@/components/landing/WhyUs";
@@ -146,6 +145,56 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+
+        <section className="py-16 sm:py-20 relative overflow-hidden border-b border-border/20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center text-sm font-medium text-muted-foreground mb-10 uppercase tracking-widest"
+            >
+              Empresas que confiam em nós
+            </motion.p>
+
+            <div className="relative">
+              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+              <Carousel
+                setApi={setClientsApi}
+                opts={{ align: "start", loop: true }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-4">
+                  {clients.map((client) => (
+                    <CarouselItem
+                      key={client.name}
+                      className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                    >
+                      <Card className="glass rounded-2xl border-border/40">
+                        <CardContent className="p-4 flex items-center justify-center">
+                          <div className="h-12 w-full rounded-xl bg-white border border-border/40 flex items-center justify-center overflow-hidden px-4">
+                            <img
+                              src={client.src}
+                              alt={client.name}
+                              loading="lazy"
+                              className="max-h-10 max-w-full object-contain"
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <CarouselPrevious className="hidden lg:flex" />
+                <CarouselNext className="hidden lg:flex" />
+              </Carousel>
+            </div>
+          </div>
+        </section>
+
         <Services />
         <RecentWork />
         <WhyUs />
