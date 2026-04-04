@@ -3,6 +3,11 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
+  const handleScrollNext = () => {
+    const nextSection = document.querySelector<HTMLElement>("#servicos");
+    nextSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       <div className="absolute inset-0 pointer-events-none">
@@ -116,21 +121,21 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
+      <motion.button
+        type="button"
+        onClick={handleScrollNext}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="fixed bottom-8 left-8 z-50 w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 cursor-pointer"
+        aria-label="Ir para a próxima secção"
       >
-        <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-primary"
-          />
-        </div>
-      </motion.div>
+        <motion.div
+          animate={{ y: [0, 12, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="w-1.5 h-1.5 rounded-full bg-primary"
+        />
+      </motion.button>
     </section>
   );
 };
